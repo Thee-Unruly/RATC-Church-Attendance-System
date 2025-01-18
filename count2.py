@@ -91,13 +91,12 @@ if st.session_state.total > 0:  # Ensure there is data before plotting
     # Display bar graph
     st.pyplot(fig_bar)
 
-    # Save bar graph to file
+    # Save bar graph to a temporary file
     bar_chart_path = tempfile.NamedTemporaryFile(delete=False, suffix=".png")
     fig_bar.savefig(bar_chart_path.name)  # Save the figure after it's created
 else:
     st.info("No attendance data available to display a breakdown chart.")
-    
-    
+
 # Pie chart for proportions
 st.markdown("### 📈 Attendance Distribution")
 if st.session_state.total > 0:  # Check if there is any data
@@ -110,12 +109,11 @@ if st.session_state.total > 0:  # Check if there is any data
     ax.axis('equal')  # Equal aspect ratio ensures pie chart is drawn as a circle.
     st.pyplot(fig)
 
-    # Save pie chart to file
+    # Save pie chart to a temporary file
     pie_chart_path = tempfile.NamedTemporaryFile(delete=False, suffix=".png")
     fig.savefig(pie_chart_path.name)  # Save the figure after it's created
 else:
     st.info("No attendance data available to display a distribution chart.")
-
 
 # Data for report
 st.markdown("### 📋 Attendance Summary Table")
@@ -168,7 +166,6 @@ def generate_pdf():
     pdf.cell(200, 10, txt="Attendance Proportion", ln=True, align='C')
     pdf.image(pie_chart_path.name, x=50, y=None, w=100)
     pdf.ln(75)
-
 
     # Save to BytesIO
     pdf_output = BytesIO()
