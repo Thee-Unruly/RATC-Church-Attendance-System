@@ -128,6 +128,7 @@ df = pd.DataFrame(data)
 
 # Styled DataFrame
 st.dataframe(df, use_container_width=True)
+from io import BytesIO
 
 def generate_pdf():
     pdf = FPDF()
@@ -156,14 +157,24 @@ def generate_pdf():
 
     pdf.ln(20)
 
-    # Add bar graph
+    # Add bar graph to BytesIO
+    bar_chart_io = BytesIO()
+    fig_bar.savefig(bar_chart_io, format='png')
+    bar_chart_io.seek(0)
+    
+    # Add pie chart to BytesIO
+    pie_chart_io = BytesIO()
+    fig.savefig(pie_chart_io, format='png')
+    pie_chart_io.seek(0)
+
+    # Add images to PDF
     pdf.cell(200, 10, txt="Attendance Breakdown", ln=True, align='C')
-    pdf.image(bar_chart_path.name, x=50, y=None, w=100)
+    pdf.image(bar_chart_io, x=50, y=None, w=100)
     
     # Add pie chart
     pdf.set_font("Arial", style='B', size=12)
     pdf.cell(200, 10, txt="Attendance Proportion", ln=True, align='C')
-    pdf.image(pie_chart_path.name, x=50, y=None, w=100)
+    pdf.image(pie_chart_io, x=50, y=None, w=100)
     pdf.ln(75)
 
     # Save to BytesIO (ensure file is written into memory correctly)
@@ -171,6 +182,7 @@ def generate_pdf():
     pdf.output(pdf_output)
     pdf_output.seek(0)  # Make sure to move the pointer to the start of the buffer
     return pdf_output
+
 
 if st.button("Download Report"):
     pdf_report = generate_pdf()
