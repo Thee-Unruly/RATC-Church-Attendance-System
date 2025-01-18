@@ -157,24 +157,14 @@ def generate_pdf():
 
     pdf.ln(20)
 
-    # Add bar graph to BytesIO
-    bar_chart_io = BytesIO()
-    fig_bar.savefig(bar_chart_io, format='png')
-    bar_chart_io.seek(0)
-    
-    # Add pie chart to BytesIO
-    pie_chart_io = BytesIO()
-    fig.savefig(pie_chart_io, format='png')
-    pie_chart_io.seek(0)
-
-    # Add images to PDF
+    # Add bar graph
     pdf.cell(200, 10, txt="Attendance Breakdown", ln=True, align='C')
-    pdf.image(bar_chart_io, x=50, y=None, w=100)
+    pdf.image(bar_chart_path.name, x=50, y=None, w=100)  # Use the file path here
     
     # Add pie chart
     pdf.set_font("Arial", style='B', size=12)
     pdf.cell(200, 10, txt="Attendance Proportion", ln=True, align='C')
-    pdf.image(pie_chart_io, x=50, y=None, w=100)
+    pdf.image(pie_chart_path.name, x=50, y=None, w=100)  # Use the file path here
     pdf.ln(75)
 
     # Save to BytesIO (ensure file is written into memory correctly)
