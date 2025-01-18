@@ -129,7 +129,6 @@ df = pd.DataFrame(data)
 # Styled DataFrame
 st.dataframe(df, use_container_width=True)
 
-# Generate PDF report
 def generate_pdf():
     pdf = FPDF()
     pdf.add_page()
@@ -167,10 +166,10 @@ def generate_pdf():
     pdf.image(pie_chart_path.name, x=50, y=None, w=100)
     pdf.ln(75)
 
-    # Save to BytesIO
+    # Save to BytesIO (ensure file is written into memory correctly)
     pdf_output = BytesIO()
     pdf.output(pdf_output)
-    pdf_output.seek(0)
+    pdf_output.seek(0)  # Make sure to move the pointer to the start of the buffer
     return pdf_output
 
 if st.button("Download Report"):
